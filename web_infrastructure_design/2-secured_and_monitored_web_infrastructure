@@ -1,0 +1,61 @@
+Secured and Monitored Web Infrastructure - www.foobar.com
+
+User flow:
+User types https://www.foobar.com
+DNS resolves to load balancer IP
+Request passes through Firewall 1
+HAproxy (with SSL) receives request
+HAproxy sends request to Server 2 or Server 3
+Nginx -> Application server -> MySQL
+Response returns to user
+
+Diagram:
+
+User
+ |
+ HTTPS
+ |
+Firewall 1
+ |
+Server 1 (HAproxy + SSL + Monitoring)
+ |-----------------------|
+ |                       |
+Firewall 2           Firewall 3
+ |                       |
+Server 2              Server 3
+Nginx                 Nginx
+App Server            App Server
+Code                  Code
+MySQL Primary         MySQL Replica
+Monitoring            Monitoring
+
+Why added:
+- Firewalls: filter traffic and protect servers
+- SSL: encrypt communication (HTTPS)
+- Monitoring: track performance and detect issues
+
+Firewalls:
+Control allowed/blocked traffic
+
+HTTPS:
+Encrypts data between user and server
+
+Monitoring:
+Detect errors, performance issues
+
+Data collection:
+Agent on each server sends metrics/logs
+
+QPS monitoring:
+Use Nginx logs or metrics to measure requests per second
+
+Issues:
+
+- SSL termination:
+Traffic between LB and servers not encrypted
+
+- One writable DB:
+Primary is bottleneck and SPOF for writes
+
+- Same components:
+Hard to scale, resource conflicts
