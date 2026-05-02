@@ -1,0 +1,67 @@
+Simple Web Stack - www.foobar.com
+
+User access flow:
+A user opens a browser and types: www.foobar.com.
+The browser asks DNS to resolve the domain name.
+The domain foobar.com has a www DNS record pointing to the server IP address 8.8.8.8.
+The request is then sent through the Internet to the server at 8.8.8.8 using HTTP or HTTPS.
+The Nginx web server receives the request.
+Nginx forwards dynamic requests to the application server.
+The application server runs the website code from the application files.
+If data is needed, the application server queries the MySQL database.
+The response goes back from the application server to Nginx, then from Nginx to the user's browser.
+
+Infrastructure diagram:
+
+User's computer
+      |
+      | HTTP/HTTPS
+      v
+DNS: www.foobar.com -> 8.8.8.8
+      |
+      v
+Server: 8.8.8.8
+      |
+      |-- Nginx Web Server
+      |
+      |-- Application Server
+      |
+      |-- Application Files / Code Base
+      |
+      |-- MySQL Database
+
+
+Specific explanations:
+
+What is a server?
+A server is a physical or virtual machine that provides services or resources to other computers over a network. In this infrastructure, the server hosts the website and responds to user requests.
+
+What is the role of the domain name?
+The domain name makes the website easier to access. Instead of typing the IP address 8.8.8.8, users can type www.foobar.com.
+
+What type of DNS record is www in www.foobar.com?
+The www record is an A record because it points the subdomain www.foobar.com to an IPv4 address, which is 8.8.8.8.
+
+What is the role of the web server?
+The web server, Nginx, receives HTTP/HTTPS requests from users. It serves static files such as HTML, CSS, images, and JavaScript. It can also forward dynamic requests to the application server.
+
+What is the role of the application server?
+The application server runs the application logic. It executes the website code, processes user requests, communicates with the database, and generates dynamic responses.
+
+What is the role of the database?
+The database, MySQL, stores and manages the website data, such as users, posts, products, or any other information needed by the application.
+
+What does the server use to communicate with the user's computer?
+The server communicates with the user's computer using the TCP/IP network protocol and HTTP or HTTPS for web communication.
+
+
+Issues with this infrastructure:
+
+SPOF:
+This infrastructure has a Single Point of Failure. Since everything is hosted on one server, if the server goes down, the whole website becomes unavailable.
+
+Downtime during maintenance:
+When maintenance is needed, such as deploying new code or restarting Nginx, the website may become unavailable because there is no second server to handle traffic during the restart.
+
+Cannot scale with too much traffic:
+This infrastructure cannot handle high traffic well. Since there is only one server, all requests go to the same machine. If too many users access the website at the same time, the server can become slow or crash.
