@@ -1,0 +1,66 @@
+Scale Up Infrastructure - www.foobar.com
+
+User flow:
+User types https://www.foobar.com
+DNS resolves to load balancer IP
+Request goes to HAproxy cluster (2 load balancers)
+Load balancer forwards request to web server
+Web server (Nginx) serves static content or forwards to application server
+Application server processes logic
+Application server communicates with database
+Response returns to user
+
+Diagram:
+
+User
+ |
+ HTTPS
+ |
+HAproxy LB1  <---->  HAproxy LB2 (cluster)
+        |
+        v
+   Web Server (Nginx)
+        |
+        v
+   Application Server
+        |
+        v
+   Database (MySQL)
+
+
+Why each element is added:
+
+Second Load Balancer (HAproxy cluster):
+Added to avoid single point of failure.
+If one load balancer fails, the other continues handling traffic.
+
+Web Server (separate):
+Handles static content (HTML, CSS, JS).
+Improves performance and reduces load on application server.
+
+Application Server (separate):
+Handles business logic and dynamic requests.
+Keeps logic separated from web server.
+
+Database Server (separate):
+Stores data independently.
+Improves scalability and performance.
+
+Extra Server:
+Used to host separated components.
+Allows better scaling and resource management.
+
+
+Key concept:
+
+Web Server vs Application Server:
+
+Web Server (Nginx):
+- Handles HTTP requests
+- Serves static files
+- Forwards dynamic requests
+
+Application Server:
+- Executes application code
+- Handles business logic
+- Communicates with database
